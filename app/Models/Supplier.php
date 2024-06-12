@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     use HasFactory, HasUuids;
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 

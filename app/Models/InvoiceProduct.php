@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceProduct extends Model
 {
     use HasFactory, HasUuids;
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 

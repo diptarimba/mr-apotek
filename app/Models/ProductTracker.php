@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductTracker extends Model
 {
     use HasFactory, HasUuids;
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 

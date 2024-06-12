@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class StockOpname extends Model
 {
     use HasFactory, HasUuids;
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 
