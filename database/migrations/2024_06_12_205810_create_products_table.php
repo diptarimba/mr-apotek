@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger("quantity");
             $table->uuid("unit_id");
             $table->bigInteger("sell_price");
+            $table->string("image");
             $table->timestamps();
         });
     }

@@ -24,12 +24,12 @@ class RoleAndPermissionSeeder extends Seeder
                 ],
                 'home' => 'admin.dashboard'
             ],
-            'user_corporate' => [
-                'permission' => [
-                    'view dashboard'
-                ],
-                'home' => 'corporate.dashboard'
-            ]
+            // 'user_corporate' => [
+            //     'permission' => [
+            //         'view dashboard'
+            //     ],
+            //     'home' => 'corporate.dashboard'
+            // ]
         ];
 
         foreach ($roles as $key => $value) {

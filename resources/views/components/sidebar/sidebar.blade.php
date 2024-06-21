@@ -10,17 +10,10 @@
                 @if (auth()->user()->getRoleNames()->first() == 'admin')
                 <x-sidebar.first-single title="Dashboard" key="dashboard" icon="home"
                     url="{{ route('admin.dashboard') }}" />
-                <x-sidebar.first-single title="Corporate" key="dashboard" icon="briefcase"
-                    url="{{ route('admin.corporate.index') }}" />
+                <x-sidebar.first-single title="Product" key="dashboard" icon="briefcase"
+                    url="{{ route('admin.product.index') }}" />
                 <x-sidebar.first-single title="Admin" key="admin" icon="key"
                     url="{{ route('admin.admin.index') }}" />
-                @elseif (auth()->user()->getRoleNames()->first() == 'user_corporate')
-                <x-sidebar.first-single title="Dashboard" key="dashboard" icon="home"
-                    url="{{ route('corporate.dashboard') }}" />
-                <x-sidebar.first-single title="Admin" key="admin" icon="key"
-                    url="{{ route('corporate.admin.index') }}" />
-                <x-sidebar.first-single title="Encrypt" key="admin" icon="command"
-                url="{{ route('corporate.encrypt.index') }}" />
                 @endif
             </ul>
         </div>

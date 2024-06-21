@@ -1,28 +1,21 @@
 @extends('layout.app')
 
 @section('page-link', $data['home'])
-@section('page-title', 'Corporate')
+@section('page-title', 'Product')
 @section('sub-page-title', 'List')
 
 @section('content')
     <x-util.card title="{{ $data['title'] }}">
         <x-form.base url="{{ $data['url'] }}" method="POST">
-            <x-form.input name="name" label="Name" placeholder="input corporate name"
-                value="{{ $corporate->name ?? '' }}" />
-            <x-form.input oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);" name="phone"
-                label="Phone" placeholder="input corporate phone" value="{{ $corporate->phone ?? '' }}" />
-            <x-form.input oninput="this.value = this.value.replace(/[^a-zA-Z0-9@_.]/g, '');" name="email" label="Email"
-                placeholder="input corporate email" value="{{ $corporate->email ?? '' }}" />
-            <x-form.input name="address" label="Address" placeholder="input corporate address"
-                value="{{ $corporate->address ?? '' }}" />
-            <x-form.input name="city" label="City" placeholder="input corporate city"
-                value="{{ $corporate->city ?? '' }}" />
-            <x-form.input name="state" label="Province" placeholder="input corporate province"
-                value="{{ $corporate->province ?? '' }}" />
-            <x-form.input name="country" label="Country" placeholder="input corporate country"
-                value="{{ $corporate->country ?? '' }}" />
-            <x-form.input oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);" name="zip" label="Postal Code" placeholder="input corporate postal code"
-                value="{{ $corporate->postal_code ?? '' }}" />
+            <x-form.input name="branch_code" label="Branch Code" placeholder="input branch code"
+                value="{{ $product->branch_code ?? '' }}" />
+            <x-form.input name="name" label="Nama Produk" placeholder="input product name"
+                value="{{ $product->name ?? '' }}" />
+            <x-form.input name="quantity" label="Kuantitas" type="number" placeholder="input product quantity"
+                value="{{ $product->quantity ?? '' }}" />
+            <x-form.select title="Unit" data="{!! $unit !!}" name="unit_id" value="{{$product->unit_id ?? ''}}"/>
+            <x-form.input type="number" name="sell_price" label="Harga Jual" placeholder="input product price"
+                value="{{ $product->sell_price ?? '' }}" />
             <x-form.input accept=".png,.jpg,.jpeg" texting="Image" name="image" type="file" label="Photo Profile"
                 placeholder="" value="" />
             <div class="mb-4 hidden" id="thumbnailContainer">

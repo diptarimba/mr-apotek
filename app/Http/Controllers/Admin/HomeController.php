@@ -12,9 +12,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $countEncrypted = Steganography::count();
-        $countCorporate = Corporate::count();
-        $countAllUserCorporate = User::where('corporate_id', '!=', null)->count();
-        return view('page.admin-dashboard.home.index', compact('countEncrypted', 'countCorporate', 'countAllUserCorporate'));
+        return view('page.admin-dashboard.home.index');
     }
 }
