@@ -112,14 +112,11 @@ class ProductController extends Controller
             $image = $request->file('image');
             $image->storeAs('public/product', $image->hashName(), 'public');
             $dataPost = array_merge($dataPost, ['image' => asset('storage/public/product/' . $image->hashName())]);
-
         }
 
         $product->update($dataPost);
 
         return redirect()->route('admin.product.index')->with('success', 'Successfully Update Product');
-
-
     }
 
     /**
@@ -127,6 +124,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            return redirect()->route('admin.product.index')->with('success', 'Successfully Deleted Product');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.product.index')->with('error', $e->getMessage());
+        }
     }
 }

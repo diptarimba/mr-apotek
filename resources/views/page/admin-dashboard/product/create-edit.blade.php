@@ -7,6 +7,13 @@
 @section('content')
     <x-util.card title="{{ $data['title'] }}">
         <x-form.base url="{{ $data['url'] }}" method="POST">
+            @if (Str::endsWith(request()->route()->getName(),
+            '.edit'))
+                <div class="mb-4">
+                    <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Image Product</label>
+                    <img class="rounded-lg shadow-xl w-full" src="{{ $product->image ?? '' }}" alt="" srcset="">
+                </div>
+            @endif
             <x-form.input name="branch_code" label="Branch Code" placeholder="input branch code"
                 value="{{ $product->branch_code ?? '' }}" />
             <x-form.input name="name" label="Nama Produk" placeholder="input product name"
