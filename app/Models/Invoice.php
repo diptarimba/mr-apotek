@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -16,8 +17,15 @@ class Invoice extends Model
         'invoice_code',
         'publish_date',
         'due_date',
+        'updated_by_id',
+        'approved_at',
         'tax',
         'total',
+    ];
+
+    protected $dates = [
+        'approved_at',
+        'deleted_at'
     ];
 
     public function suppliers()
@@ -27,6 +35,11 @@ class Invoice extends Model
 
     public function invoice_product()
     {
-        return $this->hasMany(InvoiceProduct::class);
+        return $this->hasMany(ProductTracker::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, "updated_by_id", "id");
     }
 }

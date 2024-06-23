@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, SoftDeletes;
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -38,10 +39,5 @@ class Product extends Model
     public function order_product()
     {
         return $this->hasMany(OrderProduct::class);
-    }
-
-    public function invoice_product()
-    {
-        return $this->hasMany(InvoiceProduct::class);
     }
 }

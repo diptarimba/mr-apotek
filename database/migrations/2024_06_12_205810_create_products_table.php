@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger("sell_price");
             $table->string("image");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger("tax");
             $table->bigInteger("total");
             $table->uuid("supplier_id");
+            $table->uuid("updated_by_id");
             $table->softDeletes();
             $table->timestamps();
         });

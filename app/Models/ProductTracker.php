@@ -18,11 +18,19 @@ class ProductTracker extends Model
         'quantity_returned',
         'quantity_expired',
         'buy_price',
+        'buy_amount',
+        'buy_notes',
         'expired_at',
+        'invoice_id'
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class, "product_id", "id");
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, "invoice_id", "id");
     }
 }
