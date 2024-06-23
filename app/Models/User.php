@@ -32,8 +32,6 @@ class User extends Authenticatable
         'phone',
         'password',
         'picture',
-        'corporate_id',
-        'corporate_admin'
     ];
 
     protected $dates = ['deleted_at'];
@@ -63,8 +61,4 @@ class User extends Authenticatable
         return $this->hasMany(PasswordResetToken::class);
     }
 
-    public function corporate()
-    {
-        return $this->belongsTo(Corporate::class, 'corporate_id', 'id');
-    }
 }

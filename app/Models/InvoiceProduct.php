@@ -11,7 +11,14 @@ class InvoiceProduct extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'invoice_id',
+        'product_id',
+        'quantity',
+        'price',
+        'notes',
+        'amount',
+    ];
 
     public function invoice()
     {

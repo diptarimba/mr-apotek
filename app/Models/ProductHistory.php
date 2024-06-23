@@ -11,7 +11,11 @@ class ProductHistory extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'product_id',
+        'quantity',
+        'type',
+    ];
 
     public function product()
     {

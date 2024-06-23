@@ -11,7 +11,10 @@ class Order extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'notes',
+        'amount'
+    ];
 
     public function order_product()
     {

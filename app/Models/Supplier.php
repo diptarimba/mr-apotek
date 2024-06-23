@@ -11,7 +11,11 @@ class Supplier extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'contact_name',
+        'contact_number',
+    ];
 
     public function invoices()
     {

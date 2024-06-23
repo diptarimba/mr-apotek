@@ -11,7 +11,11 @@ class StockOpname extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'type',
+        'invoice_id',
+        'updated_by_id',
+    ];
 
     public function invoice()
     {

@@ -11,7 +11,14 @@ class Product extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'unit_id',
+        'sell_price',
+        'image',
+        'quantity',
+        'branch_code',
+    ];
 
     public function unit()
     {

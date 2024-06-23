@@ -11,7 +11,15 @@ class ProductTracker extends Model
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'product_id',
+        'quantity_received',
+        'quantity_sold',
+        'quantity_returned',
+        'quantity_expired',
+        'buy_price',
+        'expired_at',
+    ];
 
     public function product()
     {
