@@ -12,6 +12,9 @@
                     url="{{ route('admin.dashboard') }}" />
                 <x-sidebar.first-single title="Product" key="dashboard" icon="briefcase"
                     url="{{ route('admin.product.index') }}" />
+                <x-sidebar.first-single title="Supplier" key="dashboard" icon="globe"
+                    url="{{ route('admin.supplier.index') }}" />
+                <x-sidebar.divider title="User" />
                 <x-sidebar.first-single title="Admin" key="admin" icon="key"
                     url="{{ route('admin.admin.index') }}" />
                 @endif

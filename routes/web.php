@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::middleware(['no_auth'])->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('dashboard');
         Route::resource('admin', AdminController::class)->parameter('admin', 'user');
         Route::resource('product', ProductController::class);
+        Route::resource('supplier', SupplierController::class);
     });
 
     Route::get('logout', [LoginRegisterController::class, 'logout'])->name('logout');
