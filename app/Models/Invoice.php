@@ -15,20 +15,22 @@ class Invoice extends Model
     protected $fillable = [
         'supplier_id',
         'invoice_code',
-        'publish_date',
-        'due_date',
         'updated_by_id',
+        'due_at',
         'approved_at',
+        'published_at',
         'tax',
         'total',
     ];
 
     protected $dates = [
+        'published_at',
         'approved_at',
         'deleted_at'
     ];
 
-    public function suppliers()
+    protected $dateFormat = 'Y-m-d';
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class, "supplier_id", "id");
     }

@@ -23,6 +23,7 @@
 
 
 
+    <link rel="stylesheet" href="{{ asset('assets-dashboard/css/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets-dashboard/css/icons.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets-dashboard/css/tailwind.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets-dashboard/css/buttons.dataTables.css') }}" />
@@ -237,7 +238,8 @@
         src="{{ asset('assets-dashboard/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js') }}">
     </script>
     <!-- dashboard init -->
-    <script src="{{ asset('assets-dashboard/js/pages/dashboard.init.js') }}"></script>
+    {{-- <script src="{{ asset('assets-dashboard/js/pages/dashboard.init.js') }}"></script> --}}
+    <script src="{{ asset('assets-dashboard/js/pages/select2.js') }}"></script>
 
     <script src="{{ asset('assets-dashboard/js/pages/nav&tabs.js') }}"></script>
 

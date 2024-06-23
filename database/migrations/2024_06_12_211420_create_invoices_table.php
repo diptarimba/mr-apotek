@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->string("invoice_code");
-            $table->timestamp("publish_date");
-            $table->timestamp("due_date");
+            $table->timestamp("published_at");
+            $table->timestamp("due_at");
             $table->bigInteger("tax");
             $table->bigInteger("total");
             $table->uuid("supplier_id");
