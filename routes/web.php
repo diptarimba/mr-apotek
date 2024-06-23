@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\InvoiceProductController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +45,9 @@ Route::middleware(['no_auth'])->group(function () {
         Route::resource('admin', AdminController::class)->parameter('admin', 'user');
         Route::resource('product', ProductController::class);
         Route::resource('supplier', SupplierController::class);
+        Route::patch('invoice/{invoice}/approve', [InvoiceController::class, 'approve'])->name('invoice.approve');
+        Route::resource('invoice/{invoice}/product', InvoiceProductController::class)->names('invoice-product');
+        Route::resource('invoice', InvoiceController::class);
     });
 
     Route::get('logout', [LoginRegisterController::class, 'logout'])->name('logout');

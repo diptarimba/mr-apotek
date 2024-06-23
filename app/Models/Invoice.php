@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,13 +25,35 @@ class Invoice extends Model
         'total',
     ];
 
-    protected $dates = [
-        'published_at',
-        'approved_at',
-        'deleted_at'
-    ];
-
     protected $dateFormat = 'Y-m-d';
+
+    protected function publishedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('Y-m-d'),
+            // set: fn (string $value) => strtolower($value),
+        );
+    }
+
+    protected function dueAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('Y-m-d'),
+            // set: fn (string $value) => strtolower($value),
+        );
+    }
+
+    // protected $casts = [
+    //     'published_at'  => 'date:Y-m-d',
+    //     'approved_at' => 'date:Y-m-d',
+    // ];
+
+    // protected $dates = [
+    //     'published_at',
+    //     'approved_at',
+    //     'deleted_at'
+    // ];
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, "supplier_id", "id");

@@ -277,6 +277,28 @@
                 }
             });
         }
+
+        function approve_data(identify) {
+            Swal.fire({
+                title: "Apakah kamu yakin?",
+                text: "Jika di approve, data yang terkait tidak bisa diubah!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, saya yakin!",
+                cancelButtonText: "Tidak"
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Terhapus!',
+                        'Invoice berhasil diapprove.',
+                        'success'
+                    )
+                    $(`#${identify}`).submit();
+                }
+            });
+        }
     </script>
 
 

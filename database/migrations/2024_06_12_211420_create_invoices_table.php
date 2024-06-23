@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("invoice_code");
             $table->timestamp("published_at");
             $table->timestamp("due_at");
+            $table->timestamp("approved_at")->nullable();
             $table->bigInteger("tax");
             $table->bigInteger("total");
             $table->uuid("supplier_id");

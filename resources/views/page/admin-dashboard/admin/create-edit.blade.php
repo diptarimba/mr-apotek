@@ -17,7 +17,7 @@
             <x-form.input oninput="this.value = this.value.replace(/^[._]+|[._]+$|[^A-Za-z0-9_.]/g, '')" name="username" label="Username" placeholder="input your nim"
                 value="{{ $user->username ?? '' }}" />
             <x-button.submit />
-            <x-button.cancel url="{{ $data['home'] }}" />
+            <x-button.cancel url="{{ $data['home'] }}" label="Kembali"/>
         </x-form.base>
     </x-util.card>
 @endsection

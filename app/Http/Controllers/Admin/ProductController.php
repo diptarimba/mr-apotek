@@ -56,7 +56,7 @@ class ProductController extends Controller
             'branch_code' => 'required',
             'quantity' => 'required|numeric|min:0',
             'sell_price' => 'required',
-            'image' => 'required|max:2048|mimes:jpg,jpeg,png'
+            'image' => 'nullable|max:2048|mimes:jpg,jpeg,png'
         ]);
 
         $dataPost = $request->all();
@@ -65,10 +65,13 @@ class ProductController extends Controller
             $image = $request->file('image');
             $image->storeAs('public/product', $image->hashName(), 'public');
             $dataPost = array_merge($dataPost, ['image' => asset('storage/public/product/' . $image->hashName())]);
-
+        } else {
+            $dataPost = array_merge($dataPost, ['image' => asset('assets-dashboard/images/not-found.png')]);
         }
 
-        Product::create($dataPost);
+        Product::create(array_merge($dataPost, [
+            'branch_code' => strtoupper($dataPost['branch_code']),
+        ]));
 
         return redirect()->route('admin.product.index')->with('success', 'Successfully Created Product');
 
@@ -114,7 +117,9 @@ class ProductController extends Controller
             $dataPost = array_merge($dataPost, ['image' => asset('storage/public/product/' . $image->hashName())]);
         }
 
-        $product->update($dataPost);
+        $product->update(array_merge($dataPost, [
+            'branch_code' => strtoupper($dataPost['branch_code']),
+        ]));
 
         return redirect()->route('admin.product.index')->with('success', 'Successfully Update Product');
     }

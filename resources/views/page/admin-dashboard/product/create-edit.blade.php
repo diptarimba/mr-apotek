@@ -14,7 +14,7 @@
                     <img class="rounded-lg shadow-xl w-full" src="{{ $product->image ?? '' }}" alt="" srcset="">
                 </div>
             @endif
-            <x-form.input name="branch_code" label="Branch Code" placeholder="input branch code"
+            <x-form.input oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" name="branch_code" label="Branch Code" placeholder="input branch code"
                 value="{{ $product->branch_code ?? '' }}" />
             <x-form.input name="name" label="Nama Produk" placeholder="input product name"
                 value="{{ $product->name ?? '' }}" />
@@ -31,7 +31,7 @@
                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Remove Image</button>
             </div>
             <x-button.submit />
-            <x-button.cancel url="{{ $data['home'] }}" />
+            <x-button.cancel url="{{ $data['home'] }}" label="Kembali" />
         </x-form.base>
     </x-util.card>
 @endsection

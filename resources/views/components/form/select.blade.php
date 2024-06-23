@@ -2,11 +2,12 @@
 <div class="mb-4">
     <div class="mb-3">
         <label class="block font-medium text-gray-700 dark:text-zinc-100 mb-2">{{ $title }}</label>
-        <select {{$disable ? 'disabled' : ''}} name="{{ $name }}"
+        <select {{ $disable ? 'disabled' : '' }} name="{{ $name }}"
             class="select2 dark:bg-zinc-800 dark:border-zinc-700 w-full rounded border-gray-100 py-2.5 text-sm text-gray-500 focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:text-zinc-100">
             <option>Select</option>
             @forelse (json_decode($data, 1) as $eachKey => $each)
-                <option {{ $value == $eachKey ? 'selected' : '' }} value="{{ $eachKey }}">{{ $each }}</option>
+                <option {{ $value == $eachKey ? 'selected' : '' }} value="{{ $eachKey }}">{{ $each }}
+                </option>
             @empty
                 <option disabled>No options available</option>
             @endforelse
@@ -15,9 +16,11 @@
 </div>
 
 @push('additional-footer')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('.select2').select2();
-    });
-</script>
+    @if ($disable)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $('.select2').select2();
+            });
+        </script>
+    @endif
 @endpush
