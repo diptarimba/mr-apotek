@@ -14,7 +14,7 @@
                 value="{{ $supplier->contact_name ?? '' }}" />
             <x-form.input name="contact_number" oninput="this.value = this.value.replace(/^[._]+|[._]+$|[^0-9_.]/g, '').slice(0,14);" label="Contact Number" placeholder="input contact number"
                 value="{{ $supplier->contact_number ?? '' }}" />
-            <x-button.submit label="Kembali"/>
+            <x-button.submit/>
             <x-button.cancel url="{{ $data['home'] }}" />
         </x-form.base>
     </x-util.card>

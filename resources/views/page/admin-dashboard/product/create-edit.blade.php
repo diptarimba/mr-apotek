@@ -9,10 +9,10 @@
         <x-form.base url="{{ $data['url'] }}" method="POST">
             @if (Str::endsWith(request()->route()->getName(),
             '.edit'))
-                <div class="mb-4">
+                <div class="mb-4 w-1/2">
                     <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Image Product</label>
                     <img class="rounded-lg shadow-xl w-full" src="{{ $product->image ?? '' }}" alt="" srcset="">
-                </div>
+            </div>
             @endif
             <x-form.input oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" name="branch_code" label="Branch Code" placeholder="input branch code"
                 value="{{ $product->branch_code ?? '' }}" />
