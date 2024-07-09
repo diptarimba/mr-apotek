@@ -48,7 +48,8 @@
                         Total:</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0"></th>
                     <th colspan="2" class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">
-                        <x-button.modal label="Bayar" id="pay-product" /></th>
+                        <x-button.modal label="Bayar" id="pay-product" />
+                    </th>
                 </tr>
             </tfoot>
         </table>
@@ -141,11 +142,12 @@
                 {
                     data: null,
                     name: 'action',
-                    render: function(data) {
+                    render: function(data, type, row, meta) {
+                        console.log("cek:",data, type, row, meta)
                         return `
                         <div class="w-full">
-                        <button class="w-full m-1 text-white bg-green-700 hover:bg-green-500 rounded p-1" onclick="modifyThisRow(${data.id})"><i class="fa fa-pencil"></i></button>
-                        <button class="w-full m-1 text-white bg-red-700 hover:bg-red-500 rounded p-1" onclick="deleteThisRow(${data.id})"><i class="fa fa-trash"></i></button></div>`
+                        <button class="w-full m-1 text-white bg-green-700 hover:bg-green-500 rounded p-1" onclick="modifyThisRow(${meta.row})"><i class="fa fa-pencil"></i></button>
+                        <button class="w-full m-1 text-white bg-red-700 hover:bg-red-500 rounded p-1" onclick="deleteThisRow(${meta.row})"><i class="fa fa-trash"></i></button></div>`
                     },
                     orderable: false,
                     searchable: false,
@@ -193,6 +195,7 @@
         }
 
         $('#btn-pay-product').on('click', function() {
+            // membuat payload untuk dikirim kan ke api store order
             let order = {}
             order.order = []
             cartProduct.forEach(product => {
@@ -204,31 +207,54 @@
                 order.order.push(newProduct)
             })
 
+            // mengambil data yang dibayarkan
             let customerMoney = $('#input-customerMoney').val();
             order.customer_pay = customerMoney;
 
+            // mengirimkan data order
             $.ajax({
                 type: "POST",
                 url: "{{ route('admin.order.store') }}",
                 headers: {
-                    'X-CSRF-TOKEN': '{{csrf_token()}}',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 },
                 data: order,
                 success: function(response) {
-                    console.log(response)
+                    // reset cart
+                    cartProduct = [];
+                    // close the modal
+                    $('#pay-product').addClass('hidden');
+                    drawTable();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Pembayaran berhasil',
+                        confirmButtonColor: '#5156be',
+                    });
                 },
                 error: function(xhr, status, error) {
-                    console.log(error)
+                    $('#pay-product').addClass('hidden');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error,
+                        confirmButtonColor: '#5156be',
+                    });
                 }
             });
         })
 
 
         function deleteThisRow(row) {
+            // get the data row will delte
             var data = table.row(row).data();
+            // find the data inside the cardProduct
             const index = cartProduct.findIndex(product => product.branch_code === data.branch_code);
             cartProduct.splice(index, 1);
+            // redraw the table from existing cartproduct
             drawTable();
+            // hide the modal add product again
             $('#add-product').addClass('hidden');
         }
 
@@ -241,8 +267,11 @@
                 },
                 type: 'GET',
                 success: function(response) {
+                    // build product suggest again
                     productSuggests = response.data.map(product => product.branch_code + ' - ' + product.name);
+                    // put to product source for the next step will be used
                     productSource = response.data;
+                    // show suggest in input tag
                     showSuggestions(search);
                 }
             });
@@ -250,14 +279,18 @@
         }
 
         $('#input-customerMoney').on('keyup', debounce(function() {
+            // get customer money
             var customerMoney = $('#input-customerMoney').val();
+            // get the total pay
             var totalPay = $('#input-totalPay').val();
+            // get the change from between total pay and customer pay
             var change = customerMoney - totalPay;
+            // validate if change is under zero
             if (change < 0) {
                 $('#input-change').val(0)
                 $('#btn-pay-product').attr('disabled', true)
                 return
-            }else{
+            } else {
                 $('#btn-pay-product').attr('disabled', false)
             }
 
@@ -265,15 +298,22 @@
         }))
 
         $('#btn-update-product').on('click', function() {
+            // get all data from form add product
             resArray = $('#form-add-product').serializeArray();
+            // set to default data
             let pushData = {}
+            // looping data from resArray to pushdata
             resArray.forEach(element => {
                 pushData[element.name] = element.value
             });
+            // find the original data in variable product
             product = productSource.find(product => product.branch_code == pushData.branch_code);
+            // set product name cause from suggested name is concatination between branch_code and product name
             pushData['product_name'] = product.name;
+            // update cartProduct with the new
             const index = cartProduct.findIndex(product => product.branch_code === pushData.branch_code);
             cartProduct[index] = pushData;
+            // set to init state
             drawTable();
             clearDataProduct()
             $('#add-product').addClass('hidden');
@@ -292,6 +332,7 @@
         }
 
         function drawTable() {
+            // reset table and add new data
             table.clear();
             cartProduct.forEach(product => {
                 table.row.add(product).draw();
@@ -307,6 +348,7 @@
         }, 500));
 
         input.addEventListener('keydown', (event) => {
+            // if the user press enter then implement the product
             if (event.key === 'Enter') {
                 if (productSuggests.length > 0) {
                     branch_code = productSuggests[0].split(' - ')[0];
@@ -333,6 +375,7 @@
             } else {
                 //ambil data dari cart
                 product = cartProduct.find(product => product.branch_code == branch_code);
+                console.log(product)
                 price = product.price;
                 max_quantity = product.max_quantity
                 quantity = product.quantity
@@ -423,7 +466,7 @@
             });
         }
 
-        // Contoh penggunaan
+        // if the modal pay product closes will execution follow action
         createMutationObserver('pay-product', function(mutation, target) {
             if (mutation.attributeName === "class") {
                 var classList = $(target).attr('class');
@@ -434,7 +477,7 @@
                 }
             }
         });
-
+        // if the modal add product closes will execution follow action
         createMutationObserver('add-product', function(mutation, target) {
             if (mutation.attributeName === "class") {
                 var classList = $(target).attr('class');
