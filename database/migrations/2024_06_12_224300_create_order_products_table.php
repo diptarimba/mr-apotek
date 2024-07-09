@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid("product_id");
             $table->bigInteger("quantity");
             $table->bigInteger("price");
-            $table->string("notes");
+            $table->string("notes")->nullable();
             $table->bigInteger("amount");
             $table->timestamps();
         });

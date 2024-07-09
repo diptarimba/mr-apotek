@@ -8,10 +8,11 @@
     'disable' => null,
     'accept' => '',
     'texting' => 'File',
+    'list' => null
 ])
 
 <div>
-    <div class="mb-4">
+    <div class="mb-4 {{ $list ? 'relative' : ''}}">
         @if (Str::lower($type) !== 'hidden')
             <label for="input-{{ $name }}"
                 class="block font-medium text-gray-700 dark:text-gray-100 mb-2">{{ $label }}</label>
@@ -28,8 +29,12 @@
             <input {{ $disable !== "" && $disable !== null ? 'readonly' : '' }} oninput="{{ $oninput }}" name="{{ $name }}"
                 id="input-{{ $name }}"
                 class="w-full rounded border-gray-100 placeholder:text-sm focus:border focus:border-violet-500 focus:ring-0 dark:bg-zinc-700/50 dark:border-zinc-600 dark:placeholder:text-zinc-100 dark:text-zinc-100"
-                type="{{ $type }}" placeholder="{{ $placeholder }}" value="{{ $value }}">
+                type="{{ $type }}" placeholder="{{ $placeholder }}" value="{{ $value }}" {{$list ? 'list=' . $list . '' : ''}}>
         @endif
+        @isset($list)
+            <div id="suggestions-list"
+                    class="absolute w-full bg-white border border-gray-300 w-full mt-1 rounded-lg shadow-lg z-10 hidden"></div>
+        @endisset
     </div>
 </div>
 

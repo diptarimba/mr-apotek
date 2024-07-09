@@ -198,7 +198,7 @@
                     &copy;
                     <script>
                         document.write(new Date().getFullYear());
-                    </script> {{config('app.name')}}
+                    </script> {{ config('app.name') }}
                 </div>
                 <div class="hidden md:inline-block text-end">Design & Develop by <a href=""
                         class="text-violet-500 underline">Developer</a></div>
@@ -227,8 +227,7 @@
     <script src="{{ asset('assets-dashboard/libs/feather-icons/feather.min.js') }}"></script>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets-dashboard/js/pages/jquery-3.6.0.min.js') }}"></script>
     <!-- apexcharts -->
     <script src="{{ asset('assets-dashboard/libs/apexcharts/apexcharts.min.js') }}"></script>
     <!-- Plugins js-->
@@ -249,7 +248,7 @@
 
     <script src="{{ asset('assets-dashboard/js/app.js') }}"></script>
 
-    <script src="{{asset('assets-dashboard/js/pages/moment.js')}}"></script>
+    <script src="{{ asset('assets-dashboard/js/pages/moment.js') }}"></script>
     <script src="{{ asset('assets-dashboard/js/pages/daterangepicker.js') }}"></script>
 
     <!-- Sweet Alerts js -->

@@ -13,7 +13,9 @@ class Order extends Model
 
     protected $fillable = [
         'notes',
-        'amount'
+        'amount',
+        'customer_pay',
+        'change',
     ];
 
     public function order_product()

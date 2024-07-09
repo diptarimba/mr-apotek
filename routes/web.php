@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceProductController;
+use App\Http\Controllers\Admin\POSController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\LoginRegisterController;
@@ -42,6 +43,8 @@ Route::middleware(['no_auth'])->group(function () {
 
     Route::prefix('admin')->as('admin.')->middleware(['role:admin', 'auth'])->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('dashboard');
+        Route::get('order', [POSController::class, 'index'])->name('order');
+        Route::post('order', [POSController::class, 'store'])->name('order.store');
         Route::resource('admin', AdminController::class)->parameter('admin', 'user');
         Route::resource('product', ProductController::class);
         Route::resource('supplier', SupplierController::class);

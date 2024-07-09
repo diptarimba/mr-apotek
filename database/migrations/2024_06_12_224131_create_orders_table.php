@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->string("notes");
+            $table->string("notes")->nullable();
             $table->bigInteger("amount");
+            $table->bigInteger("customer_pay");
+            $table->bigInteger("change");
             $table->timestamps();
         });
     }
