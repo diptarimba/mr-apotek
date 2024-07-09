@@ -43,4 +43,21 @@ class ProductTracker extends Model
     {
         return $this->belongsTo(Invoice::class, "invoice_id", "id");
     }
+
+    public function oldest()
+    {
+        return $this
+        ->where('quantity_received', '>', '0')
+        ->whereDate('expired_at', '>', now())
+        ->whereHas('invoice', function($query){
+            $query->whereNotNull('approved_at');
+        })
+        ->orderBy("created_at", "asc");
+    }
+
+    public function sold_all()
+    {
+        $this->increment("quantity_sold", $this->quantity_received);
+        $this->decrement("quantity_received", $this->quantity_received);
+    }
 }

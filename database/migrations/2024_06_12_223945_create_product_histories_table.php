@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->uuid("product_id");
             $table->bigInteger("quantity");
-            $table->enum("type", ["received", "sold", "returned", "expired"]);
+            $table->enum("type", ["RECEIVED", "SOLD", "RETURNED", "EXPIRED"]);
             $table->timestamps();
         });
     }

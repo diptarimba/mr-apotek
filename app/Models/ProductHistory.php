@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductHistory extends Model
 {
+    const STATUS_RECEIVED = "RECEIVED";
+    const STATUS_SOLD = "SOLD";
+    const STATUS_RETURNED = "RETURNED";
+    const STATUS_EXPIRED = "EXPIRED";
+
     use HasFactory, HasUuids;
     protected $primaryKey = 'id';
 

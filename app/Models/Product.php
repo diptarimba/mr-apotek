@@ -26,7 +26,7 @@ class Product extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function product()
+    public function product_history()
     {
         return $this->hasMany(ProductHistory::class);
     }
