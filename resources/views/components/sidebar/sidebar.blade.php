@@ -6,6 +6,11 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu" id="side-menu">
+                <x-sidebar.divider title="POS" />
+                <x-sidebar.first-single title="Kasir" key="dashboard" icon="crosshair"
+                    url="{{ route('admin.pos') }}" />
+                <x-sidebar.first-single title="Order" key="dashboard" icon="book-open"
+                    url="{{ route('admin.order.index') }}" />
                 <x-sidebar.divider title="Menu" />
                 @if (auth()->user()->getRoleNames()->first() == 'admin')
                 <x-sidebar.first-single title="Dashboard" key="dashboard" icon="home"

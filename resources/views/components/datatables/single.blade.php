@@ -1,4 +1,4 @@
-@props(['needrange' => null, 'url' => '', 'titlepage' => ''])
+@props(['needrange' => null, 'url' => '', 'titlepage' => '', 'customdatatables' => null])
 @section('custom-footer')
     <script>
         // mengambil URL saat ini
@@ -24,6 +24,9 @@
                     ]
                 },
                 ...optionDatatables,
+                @isset($customdatatables)
+                {{$customdatatables}}
+                @endif
                 ...{
                     responsive: true,
                 }

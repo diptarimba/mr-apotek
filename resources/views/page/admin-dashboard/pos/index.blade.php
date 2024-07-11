@@ -214,7 +214,7 @@
             // mengirimkan data order
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.order.store') }}",
+                url: "{{ route('admin.pos.store') }}",
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 },
@@ -261,7 +261,7 @@
         // mengambil data produk
         function ajaxGetProductData(search = '') {
             $.ajax({
-                url: '{{ route('admin.order') }}',
+                url: '{{ route('admin.pos') }}',
                 data: {
                     search: search,
                 },
