@@ -6,6 +6,15 @@
 @section('sub-page-title', 'Detail')
 
 @section('content')
+    <x-util.card title="Order Detail" :full-width="false">
+        <form action="">
+            <x-form.input disable="true" name="amount" label="Total Transaksi" placeholder="input your name" value="Rp. {{ number_format($order->amount, 0, '', '.') }}" />
+            <x-form.input disable="true" name="customer_pay" label="Bayaran Pembeli" placeholder="input your name"
+                value="Rp. {{ number_format($order->customer_pay, 0, '', '.') }}" />
+            <x-form.input disable="true" name="change" label="Kembalian Pembeli" placeholder="input phone"
+                value="Rp. {{ number_format($order->change, 0, '', '.') }}" />
+        </form>
+    </x-util.card>
     <x-util.card title="Product">
         <table id="datatable" class="table w-full pt-4 text-gray-700 dark:text-zinc-100 datatables-target-exec">
             <thead>

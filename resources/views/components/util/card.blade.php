@@ -1,5 +1,5 @@
-@props(['add' => false, 'title' => '', 'url' => '', 'customText' => 'Add Data', 'customBtn' => null])
-<div class="grid grid-cols-1">
+@props(['add' => false, 'title' => '', 'url' => '', 'customText' => 'Add Data', 'customBtn' => null, 'fullWidth' => true])
+<div class="grid {{ $fullWidth ? 'grid-cols-1' : 'lg:grid-cols-3 grid-cols-1' }}">
     <div class="card dark:bg-zinc-800 dark:border-zinc-600">
         <div class="card-body pb-0">
             @if (!$add)

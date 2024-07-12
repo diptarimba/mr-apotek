@@ -22,13 +22,16 @@ class ProductController extends Controller
             ->addColumn('image', function($query){
                 return '<img src="'.$query->image.'" class="img-thumbnail" width="100" height="100"/>';
             })
+            ->addColumn('quantity', function($query){
+                return '<div class="flex justify-end"><span>'.number_format($query->quantity, 0, '', '.').'</span></div>';
+            })
             ->addColumn('price', function($query){
-                return $query->sell_price;
+                return '<div class="flex justify-between"><span>Rp.</span><span>'.number_format($query->sell_price, 0, '', '.').'</span></div>';
             })
             ->addColumn('action', function($query){
                 return $this->getActionColumn($query, 'product');
             })
-            ->rawColumns(['action', 'image'])
+            ->rawColumns(['action', 'image', 'price', 'quantity'])
             ->make(true);
         }
 

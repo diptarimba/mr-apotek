@@ -34,7 +34,7 @@ class InvoiceController extends Controller
                 return Carbon::parse($query->due_at)->format('d F Y');
             })
             ->addColumn('total', function($query){
-                return 'Rp. '.number_format($query->total, 0, '.', ',');
+                return 'Rp. '.number_format($query->total, 0, '', '.');
             })
             ->addColumn('action', function($query){
                 return $this->getActionColumn($query, 'invoice');

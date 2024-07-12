@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\ProductTracker;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -24,17 +25,20 @@ class InvoiceProductController extends Controller
             ->addColumn('product_name', function($query){
                 return $query->product->name ?? '';
             })
+            ->addColumn('expired_at', function($query){
+                return Carbon::parse($query->expired_at)->format('d F Y');
+            })
             ->addColumn('action', function($query){
                 return $this->getActionColumn($query, 'invoice-product');
             })
             ->addColumn('quantity_received', function($query){
-                return number_format($query->quantity_received, 0, '.', ',') . ' ' . $query->product->unit->name;
+                return number_format($query->quantity_received, 0, '', '.') . ' ' . $query->product->unit->name;
             })
             ->addColumn('buy_price', function($query){
-                return 'Rp. '.number_format($query->buy_price, 0, '.', ',');
+                return 'Rp. '.number_format($query->buy_price, 0, '', '.');
             })
             ->addColumn('buy_amount', function($query){
-                return 'Rp. '.number_format($query->buy_amount, 0, '.', ',');
+                return 'Rp. '.number_format($query->buy_amount, 0, '', '.');
             })
             ->rawColumns(['action'])
             ->make(true);
