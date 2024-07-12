@@ -200,8 +200,8 @@
                         document.write(new Date().getFullYear());
                     </script> {{ config('app.name') }}
                 </div>
-                <div class="hidden md:inline-block text-end">Design & Develop by <a href=""
-                        class="text-violet-500 underline">Developer</a></div>
+                <div class="hidden md:inline-block text-end">Made with love by <a href="https://www.instagram.com/dpthrw"
+                        class="text-violet-500 underline">Dev</a></div>
 
             </div>
         </footer>
