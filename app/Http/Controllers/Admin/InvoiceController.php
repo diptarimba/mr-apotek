@@ -155,6 +155,10 @@ class InvoiceController extends Controller
         $invoice->update([
             'approved_at' => Carbon::now(),
         ]);
+
+        $invoice->invoice_product()->each(function($query){
+            $query->product()->increment('quantity', $query->quantity_received);
+        });
         return redirect()->route('admin.invoice.index')->with('success', 'Invoice has been approved');
     }
 }

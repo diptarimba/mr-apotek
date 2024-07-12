@@ -238,7 +238,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: error,
+                        text: error.message,
                         confirmButtonColor: '#5156be',
                     });
                 }

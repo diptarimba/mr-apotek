@@ -73,7 +73,8 @@ class InvoiceProductController extends Controller
             'title' => 'Add Product to Invoice'
         ];
         $productResource = Product::get()->pluck('name', 'id');
-        return view('page.admin-dashboard.invoice.product.create-edit', compact('invoice', 'data', 'productResource'));
+        $notApproved = null;
+        return view('page.admin-dashboard.invoice.product.create-edit', compact('invoice', 'notApproved','data', 'productResource'));
     }
 
     /**

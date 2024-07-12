@@ -36,8 +36,8 @@ class POSController extends Controller
             'order.*.quantity' => ['required', 'numeric', 'min:1', function ($attribute, $value, $fail) use ($request) {
                 foreach ($request->order as $order) {
                     $product = Product::where('branch_code', $order['branch_code'])->first();
-                    if ($product && $value > $product->quantity) {
-                        $fail('The ' . $attribute . ' must not be greater than ' . $product->quantity . ' for branch_code ' . $order['branch_code']);
+                    if ($product && $order['quantity'] > $product->quantity) {
+                        $fail('The quantity order must not be greater than ' . $product->quantity . ' for branch_code ' . $order['branch_code']);
                     }
                 }
             }],
@@ -88,7 +88,8 @@ class POSController extends Controller
                             $eachTracker->sold_all();
                             $totalQuantity -= $eachTracker->quantity_received;
                         } else {
-                            $eachTracker->decrement('quantity', $totalQuantity);
+                            $eachTracker->decrement('quantity_received', $totalQuantity);
+                            $eachTracker->increment("quantity_sold", $totalQuantity);
                             break;
                         }
                     }
