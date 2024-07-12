@@ -15,7 +15,7 @@
                 value="{{ $invoice->due_at ?? '' }}" />
             <x-form.select :disable="is_null($notApproved) ? null : ($notApproved ? null : true)"  name="supplier_id" title="Supplier"
                 value="{{ $invoice->supplier_id ?? (request()->get('supplier_id') ?? '') }}" data="{!! $supplier !!}" />
-            @if ($notApproved)
+            @if (is_null($notApproved))
             <x-button.submit/>
             @endif
             <x-button.cancel url="{{ $data['home'] }}" label="Kembali" />

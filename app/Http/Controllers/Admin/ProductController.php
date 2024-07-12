@@ -57,7 +57,6 @@ class ProductController extends Controller
             'name' => 'required',
             'unit_id' => 'exists:units,id',
             'branch_code' => 'required',
-            'quantity' => 'required|numeric|min:0',
             'sell_price' => 'required',
             'image' => 'nullable|max:2048|mimes:jpg,jpeg,png'
         ]);
@@ -74,6 +73,7 @@ class ProductController extends Controller
 
         Product::create(array_merge($dataPost, [
             'branch_code' => strtoupper($dataPost['branch_code']),
+            'quantity' => 0
         ]));
 
         return redirect()->route('admin.product.index')->with('success', 'Successfully Created Product');
@@ -107,7 +107,7 @@ class ProductController extends Controller
             'name' => 'required',
             'unit_id' => 'exists:units,id',
             'branch_code' => 'required',
-            'quantity' => 'required|numeric|min:0',
+            // 'quantity' => 'required|numeric|min:0',
             'sell_price' => 'required',
             'image' => 'sometimes|max:2048|mimes:jpg,jpeg,png'
         ]);

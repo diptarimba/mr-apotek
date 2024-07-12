@@ -48,6 +48,7 @@ class InvoiceController extends Controller
 
     public function getActionColumn($data, $path = '', $prefix = 'admin')
     {
+        $productInvoiceCount = $data->invoice_product()->count();
         $ident = Str::random(10);
         $editBtn = route("$prefix.$path.edit", $data->id);
         $deleteBtn = route("$prefix.$path.destroy", $data->id);
@@ -56,7 +57,9 @@ class InvoiceController extends Controller
         $textEditBtn = $notApproved ? 'Edit' : 'View';
         $buttonAction = '<a href="' . $editBtn . '" class="' . self::CLASS_BUTTON_PRIMARY . '">'.$textEditBtn.'</a>';
         if($notApproved){
-            $buttonAction .= '<button type="button" onclick="approve_data(\'formapprove' . $ident . '\')"class="' . self::CLASS_BUTTON_SUCCESS . '">Approve</button>';
+            if($productInvoiceCount > 0){
+                $buttonAction .= '<button type="button" onclick="approve_data(\'formapprove' . $ident . '\')"class="' . self::CLASS_BUTTON_SUCCESS . '">Approve</button>';
+            }
             $buttonAction .= '<form id="formapprove' . $ident . '" action="' . $approveBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="PATCH"> </form>';
             $buttonAction .= '<button type="button" onclick="delete_data(\'formdelete' . $ident . '\')"class="' . self::CLASS_BUTTON_DANGER . '">Delete</button>';
             $buttonAction .= '<form id="formdelete' . $ident . '" action="' . $deleteBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="DELETE"> </form>';

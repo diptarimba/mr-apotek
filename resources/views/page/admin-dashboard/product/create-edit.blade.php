@@ -18,12 +18,10 @@
                 value="{{ $product->branch_code ?? '' }}" />
             <x-form.input name="name" label="Nama Produk" placeholder="input product name"
                 value="{{ $product->name ?? '' }}" />
-            <x-form.input name="quantity" label="Kuantitas" type="number" placeholder="input product quantity"
-                value="{{ $product->quantity ?? '' }}" />
             <x-form.select title="Unit" data="{!! $unit !!}" name="unit_id" value="{{$product->unit_id ?? ''}}"/>
             <x-form.input type="number" name="sell_price" label="Harga Jual" placeholder="input product price"
                 value="{{ $product->sell_price ?? '' }}" />
-            <x-form.input accept=".png,.jpg,.jpeg" texting="Image" name="image" type="file" label="Photo Profile"
+            <x-form.input accept=".png,.jpg,.jpeg" texting="Image" name="image" type="file" label="Product Image"
                 placeholder="" value="" />
             <div class="mb-4 hidden" id="thumbnailContainer">
                 <img id="thumbnail" src="" alt="Thumbnail" class="max-w-xs mb-2">
