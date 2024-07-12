@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\POSController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Invoice;
@@ -49,6 +50,7 @@ Route::middleware(['no_auth'])->group(function () {
         Route::get('order', [OrderController::class, 'index'])->name('order.index');
         Route::get('order/{order}/detail', [OrderController::class, 'detail'])->name('order.detail');
         Route::resource('admin', AdminController::class)->parameter('admin', 'user');
+        Route::resource('unit', UnitController::class);
         Route::resource('product', ProductController::class);
         Route::resource('supplier', SupplierController::class);
         Route::patch('invoice/{invoice}/approve', [InvoiceController::class, 'approve'])->name('invoice.approve');
