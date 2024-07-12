@@ -143,7 +143,6 @@
                     data: null,
                     name: 'action',
                     render: function(data, type, row, meta) {
-                        console.log("cek:",data, type, row, meta)
                         return `
                         <div class="w-full">
                         <button class="w-full m-1 text-white bg-green-700 hover:bg-green-500 rounded p-1" onclick="modifyThisRow(${meta.row})"><i class="fa fa-pencil"></i></button>
@@ -182,6 +181,7 @@
         });
 
         var productSource = [];
+        var productSourceWasAdded = [];
         var productSuggests = [];
 
         function modifyThisRow(row) {
@@ -252,6 +252,9 @@
             // find the data inside the cardProduct
             const index = cartProduct.findIndex(product => product.branch_code === data.branch_code);
             cartProduct.splice(index, 1);
+
+            const indexSource = productSourceWasAdded.findIndex(product => product.branch_code === data.branch_code);
+            productSourceWasAdded.splice(indexSource, 1);
             // redraw the table from existing cartproduct
             drawTable();
             // hide the modal add product again
@@ -307,7 +310,7 @@
                 pushData[element.name] = element.value
             });
             // find the original data in variable product
-            product = productSource.find(product => product.branch_code == pushData.branch_code);
+            product = productSourceWasAdded.find(product => product.branch_code == pushData.branch_code);
             // set product name cause from suggested name is concatination between branch_code and product name
             pushData['product_name'] = product.name;
             // update cartProduct with the new
@@ -375,7 +378,6 @@
             } else {
                 //ambil data dari cart
                 product = cartProduct.find(product => product.branch_code == branch_code);
-                console.log(product)
                 price = product.price;
                 max_quantity = product.max_quantity
                 quantity = product.quantity
@@ -414,6 +416,7 @@
                 pushData[element.name] = element.value
             });
             product = productSource.find(product => product.branch_code == pushData.branch_code);
+            productSourceWasAdded.push(product)
             pushData['product_name'] = product.name;
             pushData['max_quantity'] = product.quantity;
 
