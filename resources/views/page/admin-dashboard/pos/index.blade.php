@@ -65,9 +65,17 @@
             <x-form.input name="product_name" label="Nama Produk" placeholder="input product name" value=""
                 list="product-name-list" />
             <x-form.input name="quantity" type="number" label="Quantity" type="number" placeholder="input quantity"
-                value="0" />
-            <x-form.input disable="benar" name="price" label="Price" type="number" placeholder="input price"
-                value="0" />
+                value="0">
+                <x-slot name="appendData">
+                    <div class="text-gray-700 dark:text-zinc-100">Maks : <span id="max-quantity"></span></div>
+                </x-slot>
+            </x-form.input>
+            <x-form.input name="price" label="Price" type="number" placeholder="input price"
+                value="0">
+                <x-slot name="appendData">
+                    <div class="text-gray-700 dark:text-zinc-100">Harga Asli : <span id="default-price"></span></div>
+                </x-slot>
+            </x-form.input>
             <x-form.input disable="benar" name="sub_total" label="Subtotal" type="number" placeholder="input subtotal"
                 value="0" />
             <x-form.input name="notes" label="Notes" placeholder="input notes" value="" />
@@ -202,7 +210,8 @@
                 newProduct = {
                     'branch_code': product.branch_code,
                     'quantity': product.quantity,
-                    'notes': product.notes
+                    'notes': product.notes,
+                    'price': product.price
                 }
                 order.order.push(newProduct)
             })
@@ -210,6 +219,8 @@
             // mengambil data yang dibayarkan
             let customerMoney = $('#input-customerMoney').val();
             order.customer_pay = customerMoney;
+
+            console.log('ini order', order)
 
             // mengirimkan data order
             $.ajax({
@@ -313,6 +324,8 @@
             product = productSourceWasAdded.find(product => product.branch_code == pushData.branch_code);
             // set product name cause from suggested name is concatination between branch_code and product name
             pushData['product_name'] = product.name;
+            pushData['max_quantity'] = product.quantity;
+            pushData['default_price'] = product.sell_price;
             // update cartProduct with the new
             const index = cartProduct.findIndex(product => product.branch_code === pushData.branch_code);
             cartProduct[index] = pushData;
@@ -373,20 +386,24 @@
                 // ambil data dari product hasil api
                 product = productSource.find(product => product.branch_code == branch_code);
                 price = product.sell_price;
+                default_price = product.sell_price;
                 max_quantity = product.quantity
                 quantity = 1;
             } else {
                 //ambil data dari cart
                 product = cartProduct.find(product => product.branch_code == branch_code);
                 price = product.price;
+                default_price = product.default_price
                 max_quantity = product.max_quantity
                 quantity = product.quantity
             }
 
             $('#btn-add-product').attr('disabled', false);
             $('#input-price').val(price);
+            $('#default-price').text(default_price);
             $('#input-branch_code').val(product.branch_code);
             $('#input-quantity').val(quantity);
+            $('#max-quantity').text(max_quantity);
             $('#input-quantity').attr('max', max_quantity);
             $('#input-quantity').attr('oninput', 'this.value = this.value.replace(/[^0-9]/g, \'\'); if(this.value > ' +
                 max_quantity + ') { this.value = ' + max_quantity + '}');
@@ -408,6 +425,10 @@
             }
         })
 
+        $('#input-price').on('keyup', function(){
+            calculateTotal()
+        })
+
         $('#btn-add-product').on('click', function() {
             resArray = $('#form-add-product').serializeArray();
 
@@ -419,6 +440,7 @@
             productSourceWasAdded.push(product)
             pushData['product_name'] = product.name;
             pushData['max_quantity'] = product.quantity;
+            pushData['default_price'] = product.sell_price;
 
             let existingIndex = cartProduct.findIndex(product => product.branch_code === pushData.branch_code);
             if (existingIndex !== -1) {
@@ -454,6 +476,8 @@
             $('#input-product_name').val('');
             $('#input-branch_code').val('');
             $('#btn-add-product').attr('disabled', true);
+            $('#max-quantity').text('');
+            $('#default-price').text('');
         }
 
 

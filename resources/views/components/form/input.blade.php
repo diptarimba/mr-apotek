@@ -8,7 +8,8 @@
     'disable' => null,
     'accept' => '',
     'texting' => 'File',
-    'list' => null
+    'list' => null,
+    'appendData' => null
 ])
 
 <div>
@@ -35,6 +36,7 @@
             <div id="suggestions-list"
                     class="absolute w-full bg-white border border-gray-300 w-full mt-1 rounded-lg shadow-lg z-10 hidden"></div>
         @endisset
+        {{!is_null($appendData) ? $appendData : ''}}
     </div>
 </div>
 

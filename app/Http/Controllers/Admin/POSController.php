@@ -33,6 +33,7 @@ class POSController extends Controller
             'order' => 'required|array',
             'order.*.branch_code' => 'exists:products,branch_code',
             'order.*.notes' => 'nullable',
+            'order.*.price' => 'required|numeric',
             'order.*.quantity' => ['required', 'numeric', 'min:1', function ($attribute, $value, $fail) use ($request) {
                 foreach ($request->order as $order) {
                     $product = Product::where('branch_code', $order['branch_code'])->first();
@@ -55,9 +56,9 @@ class POSController extends Controller
                 $product = Product::where('branch_code', $value['branch_code'])->first();
                 $orderProduct['product_id'] = $product->id;
                 $orderProduct['quantity'] = $value['quantity'];
-                $orderProduct['price'] = $product->sell_price;
+                $orderProduct['price'] = $value['price'];
                 $orderProduct['notes'] = $value['notes'];
-                $orderProduct['amount'] = $value['quantity'] * $product->sell_price;
+                $orderProduct['amount'] = $value['quantity'] * $value['price'];
                 $total += $orderProduct['amount'];
                 $putOrderProduct[] = $orderProduct;
             }
