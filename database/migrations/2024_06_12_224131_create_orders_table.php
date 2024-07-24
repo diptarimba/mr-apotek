@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger("amount");
             $table->bigInteger("customer_pay");
             $table->bigInteger("change");
+            $table->uuid("updated_by_id");
             $table->timestamps();
         });
     }

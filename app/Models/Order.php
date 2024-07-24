@@ -16,6 +16,7 @@ class Order extends Model
         'amount',
         'customer_pay',
         'change',
+        'updated_by_id'
     ];
 
     public function order_product()

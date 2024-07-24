@@ -70,6 +70,7 @@ class POSController extends Controller
                 'amount' => $total,
                 'customer_pay' => $request->customer_pay,
                 'change' => $change,
+                'updated_by_id' => auth()->user()->id
             ]);
 
             foreach ($putOrderProduct as $eachProduct) {
