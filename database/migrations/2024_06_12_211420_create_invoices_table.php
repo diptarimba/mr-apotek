@@ -17,10 +17,13 @@ return new class extends Migration
             $table->timestamp("published_at");
             $table->timestamp("due_at");
             $table->timestamp("approved_at")->nullable();
+            $table->timestamp("paid_at")->nullable();
             $table->bigInteger("tax");
             $table->bigInteger("total");
             $table->uuid("supplier_id");
+            $table->uuid("approved_by_id")->nullable();
             $table->uuid("updated_by_id");
+            $table->uuid("paid_by_id")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
@@ -16,31 +17,37 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $invoice = Invoice::select();
             return datatables()->of($invoice)
-            ->addIndexColumn()
-            ->addColumn('supplier_name', function($query){
-                return $query->supplier->name ?? '';
-            })
-            ->addColumn('updated_by_name', function($query){
-                return $query->user->name ?? '';
-            })
-            ->addColumn('published_at', function($query){
-                return Carbon::parse($query->published_at)->format('d F Y');
-            })
-            ->addColumn('due_at', function($query){
-                return Carbon::parse($query->due_at)->format('d F Y');
-            })
-            ->addColumn('total', function($query){
-                return 'Rp. '.number_format($query->total, 0, '', '.');
-            })
-            ->addColumn('action', function($query){
-                return $this->getActionColumn($query, 'invoice');
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->addColumn('supplier_name', function ($query) {
+                    return $query->supplier->name ?? '';
+                })
+                ->addColumn('status', function ($query) {
+                    $status = 'Dibuat Oleh : ' . $query->user->name;
+                    if ($query->approved_at != null) {
+                        $status .= ' | Diapprove oleh : ' . $query->approver->name;
+                    }
+                    if ($query->paid_at != null) {
+                        $status .= ' | Dibayar oleh : ' . $query->payer->name;
+                    }
+                    return $status;
+                })
+                ->addColumn('published_at', function ($query) {
+                    return Carbon::parse($query->published_at)->format('d F Y');
+                })
+                ->addColumn('due_at', function ($query) {
+                    return Carbon::parse($query->due_at)->format('d F Y');
+                })
+                ->addColumn('total', function ($query) {
+                    return 'Rp. ' . number_format($query->total, 0, '', '.');
+                })
+                ->addColumn('action', function ($query) {
+                    return $this->getActionColumn($query, 'invoice');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
 
         return view('page.admin-dashboard.invoice.index');
@@ -53,14 +60,19 @@ class InvoiceController extends Controller
         $editBtn = route("$prefix.$path.edit", $data->id);
         $deleteBtn = route("$prefix.$path.destroy", $data->id);
         $approveBtn = route("$prefix.$path.approve", $data->id);
+        $paidBtn = route("$prefix.$path.paid", $data->id);
         $notApproved = $data->approved_at == null;
         $textEditBtn = $notApproved ? 'Edit' : 'View';
-        $buttonAction = '<a href="' . $editBtn . '" class="' . self::CLASS_BUTTON_PRIMARY . '">'.$textEditBtn.'</a>';
-        if($notApproved){
-            if($productInvoiceCount > 0){
+        $buttonAction = '<a href="' . $editBtn . '" class="' . self::CLASS_BUTTON_PRIMARY . '">' . $textEditBtn . '</a>';
+        if (!$notApproved && $data->paid_at == null) {
+            $buttonAction .= '<button type="button" onclick="pay_invoice(\'formbayar' . $ident . '\')"class="' . self::CLASS_BUTTON_INFO . '">Bayar</button>';
+            $buttonAction .= '<form id="formbayar' . $ident . '" action="' . $paidBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="PATCH"> </form>';
+        }
+        if ($notApproved) {
+            if ($productInvoiceCount > 0) {
                 $buttonAction .= '<button type="button" onclick="approve_data(\'formapprove' . $ident . '\')"class="' . self::CLASS_BUTTON_SUCCESS . '">Approve</button>';
+                $buttonAction .= '<form id="formapprove' . $ident . '" action="' . $approveBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="PATCH"> </form>';
             }
-            $buttonAction .= '<form id="formapprove' . $ident . '" action="' . $approveBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="PATCH"> </form>';
             $buttonAction .= '<button type="button" onclick="delete_data(\'formdelete' . $ident . '\')"class="' . self::CLASS_BUTTON_DANGER . '">Delete</button>';
             $buttonAction .= '<form id="formdelete' . $ident . '" action="' . $deleteBtn . '" method="post"> <input type="hidden" name="_token" value="' . csrf_token() . '" /> <input type="hidden" name="_method" value="DELETE"> </form>';
         }
@@ -90,7 +102,7 @@ class InvoiceController extends Controller
             'due_at' => 'required',
         ]);
 
-        Invoice::create(array_merge($request->all(),[
+        Invoice::create(array_merge($request->all(), [
             'updated_by_id' => auth()->user()->id,
             'status' => self::STATUS_INVOICE_UNPAID,
             'tax' => 0,
@@ -132,7 +144,7 @@ class InvoiceController extends Controller
             'due_at' => 'required',
         ]);
 
-        $invoice->update(array_merge($request->all(),[
+        $invoice->update(array_merge($request->all(), [
             'updated_by_id' => auth()->user()->id,
             'invoice_code' => strtoupper($request->invoice_code),
         ]));
@@ -157,11 +169,26 @@ class InvoiceController extends Controller
     {
         $invoice->update([
             'approved_at' => Carbon::now(),
+            'approved_by_id' => Auth::user()->id,
         ]);
 
-        $invoice->invoice_product()->each(function($query){
+        $invoice->invoice_product()->each(function ($query) {
             $query->product()->increment('quantity', $query->quantity_received);
+            $query->product->product_history()->create([
+                'type' => "RECEIVED",
+                'quantity' => $query->quantity_received,
+            ]);
         });
         return redirect()->route('admin.invoice.index')->with('success', 'Invoice has been approved');
+    }
+
+    public function paid(Invoice $invoice)
+    {
+        $invoice->update([
+            'paid_at' => Carbon::now(),
+            'paid_by_id' => Auth::user()->id,
+        ]);
+
+        return redirect()->route('admin.invoice.index')->with('success', 'Invoice has been paid');
     }
 }

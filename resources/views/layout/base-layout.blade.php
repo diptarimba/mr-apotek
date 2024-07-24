@@ -255,15 +255,15 @@
     <script src="{{ asset('assets-dashboard/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
-        function delete_data(identify) {
+        function handleConfirmation(title, text, submitButtonText, eventFunction, identify) {
             Swal.fire({
-                title: "Apakah kamu yakin?",
-                text: "Jika di hapus, data yang terkait tidak bisa kembali!",
+                title: title,
+                text: text,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, saya yakin!",
+                confirmButtonText: submitButtonText,
                 cancelButtonText: "Tidak"
             }).then(function(result) {
                 if (result.isConfirmed) {
@@ -272,31 +272,27 @@
                         'Data berhasil dihapus.',
                         'success'
                     )
-                    $(`#${identify}`).submit();
+                    eventFunction(identify);
                 }
             });
         }
 
+        function delete_data(identify) {
+            handleConfirmation("Apakah kamu yakin?", "Jika di hapus, data yang terkait tidak bisa kembali!", "Ya, saya yakin!", function(identify) {
+                $(`#${identify}`).submit();
+            }, identify);
+        }
+
         function approve_data(identify) {
-            Swal.fire({
-                title: "Apakah kamu yakin?",
-                text: "Jika di approve, data yang terkait tidak bisa diubah!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, saya yakin!",
-                cancelButtonText: "Tidak"
-            }).then(function(result) {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Terhapus!',
-                        'Invoice berhasil diapprove.',
-                        'success'
-                    )
-                    $(`#${identify}`).submit();
-                }
-            });
+            handleConfirmation("Apakah kamu yakin?", "Jika di approve, data yang terkait tidak bisa diubah!", "Ya, saya yakin!", function(identify) {
+                $(`#${identify}`).submit();
+            }, identify);
+        }
+
+        function pay_invoice(identify) {
+            handleConfirmation("Apakah kamu yakin?", "Jika di tandai bayar, data yang terkait tidak bisa diubah!", "Ya, saya yakin!", function(identify) {
+                $(`#${identify}`).submit();
+            }, identify);
         }
     </script>
 

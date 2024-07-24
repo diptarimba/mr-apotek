@@ -17,9 +17,12 @@ class Invoice extends Model
     protected $fillable = [
         'supplier_id',
         'invoice_code',
+        'paid_at',
+        'paid_by_id',
         'updated_by_id',
         'due_at',
         'approved_at',
+        'approved_by_id',
         'published_at',
         'tax',
         'total',
@@ -67,5 +70,15 @@ class Invoice extends Model
     public function user()
     {
         return $this->belongsTo(User::class, "updated_by_id", "id");
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, "approved_by_id", "id");
+    }
+
+    public function payer()
+    {
+        return $this->belongsTo(User::class, "paid_by_id", "id");
     }
 }

@@ -16,7 +16,7 @@
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Tanggal Dibuat Invoice</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Tanggal Ditagih Invoice</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Total</th>
-                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Oleh</th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Status</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Action</th>
                     </th>
                 </tr>
@@ -34,7 +34,7 @@
     <x-datatables.column name="published_at"/>
     <x-datatables.column name="due_at"/>
     <x-datatables.column name="total"/>
-    <x-datatables.column name="updated_by_name"/>
+    <x-datatables.column name="status"/>
     <x-datatables.action />
 </x-datatables.single>
 @endsection

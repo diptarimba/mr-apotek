@@ -54,6 +54,7 @@ Route::middleware(['no_auth'])->group(function () {
         Route::resource('product', ProductController::class);
         Route::resource('supplier', SupplierController::class);
         Route::patch('invoice/{invoice}/approve', [InvoiceController::class, 'approve'])->name('invoice.approve');
+        Route::patch('invoice/{invoice}/paid', [InvoiceController::class, 'paid'])->name('invoice.paid');
         Route::resource('invoice/{invoice}/product', InvoiceProductController::class)->names('invoice-product');
         Route::resource('invoice', InvoiceController::class);
     });
