@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:manage supplier']);
+    }
     /**
      * Display a listing of the resource.
      */

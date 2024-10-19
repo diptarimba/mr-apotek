@@ -12,6 +12,10 @@ use Illuminate\Support\Str;
 
 class InvoiceProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:manage invoice product']);
+    }
     /**
      * Display a listing of the resource.
      */

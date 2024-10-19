@@ -43,7 +43,7 @@ Route::middleware(['no_auth'])->group(function () {
     Route::get('me', [ProfileController::class, 'index'])->name('profile.me');
     Route::post('{user}/me', [ProfileController::class, 'store'])->name('profile.store');
 
-    Route::prefix('admin')->as('admin.')->middleware(['role:admin', 'auth'])->group(function () {
+    Route::prefix('admin')->as('admin.')->middleware(['role:admin|cashier', 'auth'])->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('dashboard');
         Route::get('pos', [POSController::class, 'index'])->name('pos');
         Route::post('pos', [POSController::class, 'store'])->name('pos.store');

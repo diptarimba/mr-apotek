@@ -6,27 +6,45 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu" id="side-menu">
-                <x-sidebar.divider title="POS" />
-                <x-sidebar.first-single title="Kasir" key="dashboard" icon="crosshair" url="{{ route('admin.pos') }}" />
-                <x-sidebar.first-single title="Order" key="dashboard" icon="book-open"
-                    url="{{ route('admin.order.index') }}" />
-                <x-sidebar.divider title="Main" />
-                @if (auth()->user()->getRoleNames()->first() == 'admin')
-                    <x-sidebar.first-single title="Dashboard" key="dashboard" icon="home"
-                        url="{{ route('admin.dashboard') }}" />
-                    <x-sidebar.first-single title="Product" key="dashboard" icon="briefcase"
-                        url="{{ route('admin.product.index') }}" />
-                    <x-sidebar.first-single title="Invoice" key="dashboard" icon="columns"
-                        url="{{ route('admin.invoice.index') }}" />
-                    <x-sidebar.first-single title="Supplier" key="dashboard" icon="globe"
-                        url="{{ route('admin.supplier.index') }}" />
+                @canany(['manage pos', 'manage order'])
+                    <x-sidebar.divider title="POS" />
+                    @can('manage pos')
+                        <x-sidebar.first-single title="Kasir" key="dashboard" icon="crosshair" url="{{ route('admin.pos') }}" />
+                    @endcan
+                    @can('manage order')
+                        <x-sidebar.first-single title="Order" key="dashboard" icon="book-open"
+                            url="{{ route('admin.order.index') }}" />
+                    @endcan
+                @endcanany
+                @canany(['manage product', 'manage invoice', 'manage supplier', 'view dashboard'])
+                    <x-sidebar.divider title="Main" />
+                    @can('view dashboard')
+                        <x-sidebar.first-single title="Dashboard" key="dashboard" icon="home"
+                            url="{{ route('admin.dashboard') }}" />
+                    @endcan
+                    @can('manage product')
+                        <x-sidebar.first-single title="Product" key="dashboard" icon="briefcase"
+                            url="{{ route('admin.product.index') }}" />
+                    @endcan
+                    @can('manage invoice')
+                        <x-sidebar.first-single title="Invoice" key="dashboard" icon="columns"
+                            url="{{ route('admin.invoice.index') }}" />
+                    @endcan
+                    @can('manage supplier')
+                        <x-sidebar.first-single title="Supplier" key="dashboard" icon="globe"
+                            url="{{ route('admin.supplier.index') }}" />
+                    @endcan
+                @endcanany
+                @can('manage admin')
                     <x-sidebar.divider title="User" />
                     <x-sidebar.first-single title="Admin" key="admin" icon="key"
                         url="{{ route('admin.admin.index') }}" />
+                @endcan
+                @can('manage unit')
                     <x-sidebar.divider title="Setting" />
                     <x-sidebar.first-single title="Unit" key="admin" icon="settings"
-                    url="{{ route('admin.unit.index') }}" />
-                @endif
+                        url="{{ route('admin.unit.index') }}" />
+                @endcan
             </ul>
         </div>
         <!-- Sidebar -->

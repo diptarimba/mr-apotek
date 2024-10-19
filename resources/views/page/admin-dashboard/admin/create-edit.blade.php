@@ -16,6 +16,7 @@
                 value="{{ $user->email ?? '' }}" />
             <x-form.input oninput="this.value = this.value.replace(/^[._]+|[._]+$|[^A-Za-z0-9_.]/g, '')" name="username" label="Username" placeholder="input your nim"
                 value="{{ $user->username ?? '' }}" />
+            <x-form.select name="role" title="Role" :disable="Str::endsWith(request()->route()->getName(), '.create') ? null : true " data="{!! $role !!}" value="{{ $user->roles[0]->name ?? '' }}" />
             <x-button.submit />
             <x-button.cancel url="{{ $data['home'] }}" label="Kembali"/>
         </x-form.base>

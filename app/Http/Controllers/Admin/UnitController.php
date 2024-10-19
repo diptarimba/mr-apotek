@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class UnitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:manage unit']);
+    }
     /**
      * Display a listing of the resource.
      */

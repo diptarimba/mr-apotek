@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:manage admin']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -16,16 +20,17 @@ class AdminController extends Controller
     {
         if ($request->ajax()) {
             $search = $request->search['value'];
-            $user = User::whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })
-                ->where(function ($query) use ($search) {
+            $user = User::
+                where(function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('phone', 'like', '%' . $search . '%');
                 })
                 ->select();
             return datatables()->of($user)
                 ->addIndexColumn()
+                ->addColumn('role', function($query){
+                    return ucfirst($query->getRoleNames()->first());
+                })
                 ->addColumn('action', function ($query) {
                     return $this->getActionColumn($query, 'admin');
                 })
@@ -40,8 +45,9 @@ class AdminController extends Controller
      */
     public function create()
     {
+        $role = json_encode(['admin' => 'Admin', 'cashier' => 'Cashier']);
         $data = $this->createMetaPageData(null, 'Admin', 'admin');
-        return view('page.admin-dashboard.admin.create-edit', compact('data'));
+        return view('page.admin-dashboard.admin.create-edit', compact('data', 'role'));
     }
 
     /**
@@ -54,14 +60,15 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required',
             'email' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+            'role' => 'required|in:admin,cashier'
         ]);
 
         $user = User::create(array_merge($request->all(), [
             'password' => bcrypt($request->password),
             'picture' => asset('assets-dashboard/images/placeholder.png')
         ]));
-        $user->assignRole('admin');
+        $user->assignRole($request->role);
         return redirect()->route('admin.admin.index')->with('success', 'Admin created successfully');
     }
 
@@ -78,8 +85,9 @@ class AdminController extends Controller
      */
     public function edit(User $user)
     {
+        $role = json_encode(['admin' => 'Admin', 'cashier' => 'Cashier']);
         $data = $this->createMetaPageData($user->id, 'Admin', 'admin');
-        return view('page.admin-dashboard.admin.create-edit', compact('data', 'user'));
+        return view('page.admin-dashboard.admin.create-edit', compact('data', 'user', 'role'));
     }
 
     /**

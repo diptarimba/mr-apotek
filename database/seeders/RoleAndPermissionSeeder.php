@@ -20,16 +20,31 @@ class RoleAndPermissionSeeder extends Seeder
         $roles = [
             'admin' => [
                 'permission' => [
-                    'view dashboard'
+                    'view dashboard',
+                    'manage admin',
+                    'manage cashier',
+                    'manage invoice',
+                    'manage invoice product',
+                    'manage order',
+                    'manage pos',
+                    'manage product',
+                    'manage supplier',
+                    'manage unit',
                 ],
                 'home' => 'admin.dashboard'
             ],
-            // 'user_corporate' => [
-            //     'permission' => [
-            //         'view dashboard'
-            //     ],
-            //     'home' => 'corporate.dashboard'
-            // ]
+            'cashier' => [
+                'permission' => [
+                    'view dashboard',
+                    'manage invoice',
+                    'manage invoice product',
+                    'manage order',
+                    'manage pos',
+                    'manage product',
+                    'manage supplier',
+                ],
+                'home' => 'admin.dashboard'
+            ]
         ];
 
         foreach ($roles as $key => $value) {

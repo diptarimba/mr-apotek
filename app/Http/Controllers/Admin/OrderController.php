@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:manage order']);
+    }
     /**
      * Display a listing of the resource.
      */
