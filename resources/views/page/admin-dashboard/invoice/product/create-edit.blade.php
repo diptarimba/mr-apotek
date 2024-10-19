@@ -17,7 +17,7 @@
                 value="{{ $product->quantity_received ?? '' }}" />
             <x-form.input :disable="is_null($notApproved) ? null : ($notApproved ? null : true)" name="expired_at" label="Tanggal Expired" type="date" placeholder="input contact name"
                 value="{{ $product->expired_at ?? '' }}" />
-            @if ($notApproved)
+            @if (!$notApproved)
             <x-button.submit  />
             @endif
             <x-button.cancel url="{{ $data['home'] }}" label="Kembali"/>
