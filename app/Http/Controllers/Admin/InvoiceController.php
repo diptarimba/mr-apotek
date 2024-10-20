@@ -22,7 +22,7 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $invoice = Invoice::select();
+            $invoice = Invoice::with('invoice_product')->select();
             if ($request->start_date && $request->end_date) {
                 $invoice->whereBetween('created_at', [
                     $request->start_date . ' 00:00:00',
@@ -44,6 +44,9 @@ class InvoiceController extends Controller
                         $status .= ' | Dibayar oleh : ' . $query->payer->name;
                     }
                     return $status;
+                })
+                ->addColumn('expired_at', function($query){
+                    return $query->invoice_product->count() > 0 ? Carbon::parse($query->invoice_product->first()->expired_at)->format('d F Y') : '-';
                 })
                 ->addColumn('published_at', function ($query) {
                     return Carbon::parse($query->published_at)->format('d F Y');

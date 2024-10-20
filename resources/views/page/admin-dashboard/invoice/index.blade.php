@@ -17,6 +17,7 @@
                 <tr>
                     <th class="p-4 pr-8 border rtl:border-l-0 border-y-2 border-gray-50 dark:border-zinc-600">Id</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Supplier</th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Expired</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Invoice Code</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Tanggal Dibuat
                         Invoice</th>
@@ -37,6 +38,7 @@
 @section('custom-footer')
     <x-datatables.single url="{{ route('admin.invoice.index') }}" needrange="true">
         <x-datatables.column name="supplier_name" />
+        <x-datatables.column name="expired_at" />
         <x-datatables.column name="invoice_code" />
         <x-datatables.column name="published_at" />
         <x-datatables.column name="due_at" />
