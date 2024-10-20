@@ -49,6 +49,7 @@ Route::middleware(['no_auth'])->group(function () {
         Route::post('pos', [POSController::class, 'store'])->name('pos.store');
         Route::get('order', [OrderController::class, 'index'])->name('order.index');
         Route::get('order/{order}/detail', [OrderController::class, 'detail'])->name('order.detail');
+        Route::get('product/{product}/last-transaction', [ProductController::class, 'lastTransaction'])->name('product.lastTransaction');
         Route::resource('admin', AdminController::class)->parameter('admin', 'user');
         Route::resource('unit', UnitController::class);
         Route::resource('product', ProductController::class);

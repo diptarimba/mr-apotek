@@ -32,6 +32,22 @@
             <x-button.cancel url="{{ $data['home'] }}" label="Kembali" />
         </x-form.base>
     </x-util.card>
+
+    <x-util.card title="Product">
+        <table id="datatable" class="table w-full pt-4 text-gray-700 dark:text-zinc-100 datatables-target-exec">
+            <thead>
+                <tr>
+                    <th class="p-4 pr-8 border rtl:border-l-0 border-y-2 border-gray-50 dark:border-zinc-600">Id</th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Transaction Date</th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Quantity</th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Action</th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </x-util.card>
 @endsection
 
 @section('custom-footer')
@@ -80,4 +96,9 @@
             thumbnailContainer.classList.add('hidden');
         });
     </script>
+    <x-datatables.single url="{{route('admin.product.lastTransaction', $product->id)}}">
+        <x-datatables.column name="created_at"/>
+        <x-datatables.column name="quantity"/>
+        <x-datatables.action />
+    </x-datatables.single>
 @endsection

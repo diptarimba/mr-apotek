@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -142,5 +145,36 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('admin.product.index')->with('error', $e->getMessage());
         }
+    }
+
+    public function lastTransaction(Product $product, Request $request)
+    {
+        if ($request->ajax())
+        {
+            $orderProduct = OrderProduct::with('order')->where('product_id', $product->id)
+            ->orderBy('created_at', 'desc')
+            ->select();
+
+            return datatables()->of($orderProduct)
+            ->addIndexColumn()
+            ->addColumn('created_at', function($query){
+                return $query->created_at->format('d F Y H:i:s');
+            })
+            ->addColumn('quantity', function($query){
+                return number_format($query->quantity, 0, '', '.');
+            })
+            ->addColumn('action', function($query){
+                return $this->getActionDetailOrder($query->order, 'order', 'admin');
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+    }
+
+    public function getActionDetailOrder($data, $path = '', $prefix = 'admin')
+    {
+        $detailBtn = route("$prefix.$path.detail", $data->id);
+        $buttonAction = '<a href="' . $detailBtn . '" class="' . self::CLASS_BUTTON_PRIMARY . '">View Order</a>';
+        return $buttonAction;
     }
 }

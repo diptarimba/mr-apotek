@@ -3,10 +3,10 @@
 
 @section('page-link', route('admin.product.index'))
 @section('page-title', 'Data')
-@section('sub-page-title', 'Admin')
+@section('sub-page-title', 'Product')
 
 @section('content')
-    <x-util.card title="Admin" add url="{{route('admin.product.create')}}">
+    <x-util.card title="Product" add url="{{route('admin.product.create')}}">
         <table id="datatable" class="table w-full pt-4 text-gray-700 dark:text-zinc-100 datatables-target-exec">
             <thead>
                 <tr>
