@@ -21,11 +21,20 @@ class OrderController extends Controller
     {
         if($request->ajax())
         {
-            $order = Order::select();
+            $order = Order::with('order_product.product')->select();
             return datatables()->of($order)
             ->addIndexColumn()
             ->addColumn('created_at', function($query){
                 return $query->created_at->format('d F Y H:i:s');
+            })
+            ->addColumn('product_sold', function($query){
+                $orderProducts = $query->order_product->take(4)->map(function($orderProduct) {
+                    return $orderProduct->product->name . '(' . $orderProduct->quantity . ')';
+                });
+                if($orderProducts->count() < $query->order_product->count()){
+                    $orderProducts->push('...');
+                }
+                return $orderProducts->implode(', ');
             })
             ->addColumn('amount', function($query){
                 return '<div class="flex justify-between"><span>Rp.</span><span>'.number_format($query->amount, 0, '', '.').'</span></div>';

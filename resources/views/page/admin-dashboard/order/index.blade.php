@@ -16,8 +16,9 @@
             <thead>
                 <tr>
                     <th class="p-4 pr-8 border rtl:border-l-0 border-y-2 border-gray-50 dark:border-zinc-600">Id</th>
-                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Tanngal Transaksi
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Tangal Transaksi
                     </th>
+                    <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Product Terjual</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Jumlah</th>
                     <th class="p-4 pr-8 border border-y-2 border-gray-50 dark:border-zinc-600 border-l-0">Action</th>
                     </th>
@@ -32,6 +33,7 @@
 @section('custom-footer')
     <x-datatables.single url="{{ route('admin.order.index') }}" needrange="true">
         <x-datatables.column name="created_at" />
+        <x-datatables.column name="product_sold" />
         <x-datatables.column name="amount" />
         <x-datatables.action />
     </x-datatables.single>
